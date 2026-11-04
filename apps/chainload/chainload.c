@@ -8,7 +8,7 @@
 #include "efi_emulation.h"
 #include <efilib.h>
 
-/* Stand-in for the xnu loader app: maps a PE32+ EFI application such as the
+/* Built-in EFI application: maps a PE32+ EFI application such as the
  * ReactOS uefildr.efi from the module volume, relocates it and starts it with
  * the emulated system table. The disk becomes its boot device so a loader that
  * reads partitions itself finds the install there. */

@@ -60,9 +60,9 @@ static void parse_framebuffer(CONST UINT8 *tag) {
 }
 
 void kernel_multiboot2_main(UINT64 magic, UINT64 mbi) {
-  efiemu_debug_string("xnu-loader kernel: multiboot2 entry\n");
+  efiemu_debug_string("efi-emulation: multiboot2 entry\n");
   if (magic != MB2_BOOTLOADER_MAGIC) {
-    efiemu_debug_string("xnu-loader kernel: bad multiboot2 magic\n");
+    efiemu_debug_string("efi-emulation: bad multiboot2 magic\n");
     for (;;)
       __asm__ volatile("cli; hlt");
   }
@@ -127,7 +127,7 @@ void kernel_multiboot2_main(UINT64 magic, UINT64 mbi) {
   }
 
   if (boot_info.memory_count == 0) {
-    efiemu_debug_string("xnu-loader kernel: GRUB gave no memory map\n");
+    efiemu_debug_string("efi-emulation: GRUB gave no memory map\n");
     for (;;)
       __asm__ volatile("cli; hlt");
   }

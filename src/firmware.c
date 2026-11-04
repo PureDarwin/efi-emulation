@@ -1472,7 +1472,7 @@ void efiemu_main(EfiEmuBootInfo *info) {
   system_table.Hdr.Signature = EFI_SYSTEM_TABLE_SIGNATURE;
   system_table.Hdr.Revision = EFI_SYSTEM_TABLE_REVISION;
   system_table.Hdr.HeaderSize = sizeof(system_table);
-  system_table.FirmwareVendor = L"xnu-loader";
+  system_table.FirmwareVendor = L"efi-emulation";
   system_table.ConOut = &console_out;
   system_table.StdErr = &console_out;
   system_table.RuntimeServices = &runtime_services;

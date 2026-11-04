@@ -96,7 +96,7 @@ extern CONST CHAR8 embedded_initrd_start[], embedded_initrd_end[];
 
 void kernel_linux_main(UINT64 boot_params) {
   CONST UINT8 *bp = (CONST UINT8 *)(UINTN)boot_params;
-  efiemu_debug_string("xnu-loader kernel: linux boot protocol entry\n");
+  efiemu_debug_string("efi-emulation: linux boot protocol entry\n");
 
   boot_info.protocol_data_base = boot_params;
   boot_info.protocol_data_size = 4096;
@@ -134,15 +134,15 @@ void kernel_linux_main(UINT64 boot_params) {
   if (embedded_initrd_end != embedded_initrd_start) {
     initrd = (UINT64)(UINTN)embedded_initrd_start;
     initrd_size = (UINT64)(embedded_initrd_end - embedded_initrd_start);
-    efiemu_debug_string("xnu-loader kernel: using the built-in initrd\n");
+    efiemu_debug_string("efi-emulation: using the built-in initrd\n");
   }
   if (initrd && initrd_size)
     kernel_parse_cpio(&boot_info, initrd, initrd_size);
   else
-    efiemu_debug_string("xnu-loader kernel: no initrd\n");
+    efiemu_debug_string("efi-emulation: no initrd\n");
 
   if (boot_info.memory_count == 0) {
-    efiemu_debug_string("xnu-loader kernel: boot_params has no E820 map\n");
+    efiemu_debug_string("efi-emulation: boot_params has no E820 map\n");
     for (;;)
       __asm__ volatile("cli; hlt");
   }

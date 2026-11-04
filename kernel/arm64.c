@@ -220,7 +220,7 @@ static void add_nomap(UINT64 base, UINT64 size) {
 
 static void log_ranges(CONST CHAR8 *what, CONST struct range *r, UINT32 n) {
   for (UINT32 i = 0; i < n; ++i) {
-    efiemu_debug_string("xnu-loader kernel: ");
+    efiemu_debug_string("efi-emulation: ");
     efiemu_debug_string(what);
     efiemu_debug_string(" ");
     efiemu_debug_hex(r[i].base);
@@ -520,10 +520,10 @@ void kernel_arm64_main(UINT64 fdt) {
   // the console comes from the tree, so read the board before the first message
   fdt_board_parse((CONST VOID *)(UINTN)fdt);
   serial_init();
-  serial_puts8((CONST CHAR8 *)"\nxnu-loader kernel: C entry\n");
+  serial_puts8((CONST CHAR8 *)"\nefi-emulation: C entry\n");
   efiemu_exceptions_install();
   if (be32((CONST UINT8 *)(UINTN)fdt) != FDT_MAGIC) {
-    serial_puts8((CONST CHAR8 *)"xnu-loader kernel: no device tree in x0\n");
+    serial_puts8((CONST CHAR8 *)"efi-emulation: no device tree in x0\n");
     for (;;)
       __asm__ volatile(XNU_LOADER_WAIT);
   }
@@ -531,7 +531,7 @@ void kernel_arm64_main(UINT64 fdt) {
 #if defined(XNU_LOADER_CRONOS)
   cronos_screen_mark(5, 0xffff0000U);
 #endif
-  serial_puts8((CONST CHAR8 *)"xnu-loader kernel: device tree parsed, enabling the MMU\n");
+  serial_puts8((CONST CHAR8 *)"efi-emulation: device tree parsed, enabling the MMU\n");
   MARK('F');
   arm64_enable_mmu();
 #if defined(XNU_LOADER_CRONOS)
@@ -539,7 +539,7 @@ void kernel_arm64_main(UINT64 fdt) {
 #endif
   MARK('M');
   serial_reinit();
-  efiemu_debug_string("xnu-loader kernel: arm64 Image entry\n");
+  efiemu_debug_string("efi-emulation: arm64 Image entry\n");
   log_ranges("ram", ram, nram);
   log_ranges("reserved", reserved, nreserved);
   log_ranges("no-map", nomap, nnomap);
@@ -550,26 +550,26 @@ void kernel_arm64_main(UINT64 fdt) {
   UINT64 fdt_initrd_size = fdt_initrd_end > fdt_initrd_start ? fdt_initrd_end - fdt_initrd_start : 0;
   BOOLEAN have_initrd = FALSE;
   if (embedded_initrd_end != embedded_initrd_start) {
-    efiemu_debug_string("xnu-loader kernel: using the built-in initrd\n");
+    efiemu_debug_string("efi-emulation: using the built-in initrd\n");
     kernel_parse_cpio(&boot_info, (UINT64)(UINTN)embedded_initrd_start,
                       (UINT64)(embedded_initrd_end - embedded_initrd_start));
     have_initrd = TRUE;
   }
   if (fdt_initrd_start && fdt_initrd_size) {
-    efiemu_debug_string("xnu-loader kernel: using the boot loader's initrd at ");
+    efiemu_debug_string("efi-emulation: using the boot loader's initrd at ");
     efiemu_debug_hex(fdt_initrd_start);
     efiemu_debug_string("\n");
     kernel_parse_cpio(&boot_info, fdt_initrd_start, fdt_initrd_size);
     have_initrd = TRUE;
   }
   if (!have_initrd)
-    efiemu_debug_string("xnu-loader kernel: no initrd\n");
+    efiemu_debug_string("efi-emulation: no initrd\n");
   MARK('I');
   build_memory_map();
   if (cmdline[0])
     boot_info.cmdline = cmdline;
   if (boot_info.memory_count == 0) {
-    efiemu_debug_string("xnu-loader kernel: device tree has no memory\n");
+    efiemu_debug_string("efi-emulation: device tree has no memory\n");
     for (;;)
       __asm__ volatile(XNU_LOADER_WAIT);
   }
@@ -592,7 +592,7 @@ void kernel_arm64_main(UINT64 fdt) {
   /* nothing was booted: on a board with no console a reset beats a hang, and
    * the ram log says why */
   MARK('X');
-  efiemu_debug_string("xnu-loader kernel: nothing booted, resetting\n");
+  efiemu_debug_string("efi-emulation: nothing booted, resetting\n");
   psci_reset();
 #endif
 }

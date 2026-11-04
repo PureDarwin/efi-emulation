@@ -108,7 +108,7 @@ static void add_reserved(UINT64 base, UINT64 size) {
 
 static void log_ranges(CONST CHAR8 *what, CONST struct range *r, UINT32 n) {
   for (UINT32 i = 0; i < n; ++i) {
-    efiemu_debug_string("xnu-loader kernel: ");
+    efiemu_debug_string("efi-emulation: ");
     efiemu_debug_string(what);
     efiemu_debug_string(" ");
     efiemu_debug_hex(r[i].base);
@@ -260,17 +260,17 @@ void kernel_riscv64_main(UINT64 hartid, UINT64 fdt) {
   serial_init();
   efiemu_exceptions_install();
   efiemu_riscv_hartid = hartid;
-  efiemu_debug_string("\nxnu-loader kernel: riscv64 Image entry on hart ");
+  efiemu_debug_string("\nefi-emulation: riscv64 Image entry on hart ");
   efiemu_debug_hex(hartid);
   efiemu_debug_string(", fdt ");
   efiemu_debug_hex(fdt);
   efiemu_debug_string("\n");
   if (!fdt || be32((CONST UINT8 *)(UINTN)fdt) != FDT_MAGIC) {
-    efiemu_debug_string("xnu-loader kernel: no device tree in a1\n");
+    efiemu_debug_string("efi-emulation: no device tree in a1\n");
     halt();
   }
   parse_fdt(fdt);
-  efiemu_debug_string("xnu-loader kernel: device tree parsed, timebase ");
+  efiemu_debug_string("efi-emulation: device tree parsed, timebase ");
   efiemu_debug_hex(efiemu_riscv_timebase);
   efiemu_debug_string(" Hz\n");
   log_ranges("ram", ram, nram);
@@ -284,23 +284,23 @@ void kernel_riscv64_main(UINT64 hartid, UINT64 fdt) {
   if (embedded_end != embedded_start) {
     initrd = embedded_start;
     initrd_size = embedded_end - embedded_start;
-    efiemu_debug_string("xnu-loader kernel: using the built-in initrd\n");
+    efiemu_debug_string("efi-emulation: using the built-in initrd\n");
   }
   if (initrd && initrd_size) {
-    efiemu_debug_string("xnu-loader kernel: initrd ");
+    efiemu_debug_string("efi-emulation: initrd ");
     efiemu_debug_hex(initrd);
     efiemu_debug_string(" size ");
     efiemu_debug_hex(initrd_size);
     efiemu_debug_string("\n");
     kernel_parse_cpio(&boot_info, initrd, initrd_size);
   } else {
-    efiemu_debug_string("xnu-loader kernel: no initrd\n");
+    efiemu_debug_string("efi-emulation: no initrd\n");
   }
   build_memory_map();
   if (cmdline[0])
     boot_info.cmdline = cmdline;
   if (boot_info.memory_count == 0) {
-    efiemu_debug_string("xnu-loader kernel: device tree has no memory\n");
+    efiemu_debug_string("efi-emulation: device tree has no memory\n");
     halt();
   }
   efiemu_main(&boot_info);

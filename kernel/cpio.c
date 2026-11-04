@@ -28,7 +28,7 @@ void kernel_parse_cpio(EfiEmuBootInfo *info, UINT64 start, UINT64 size) {
   while (off + 110 <= size && info->module_count < EFIEMU_MAX_MODULES) {
     CONST UINT8 *h = base + off;
     if (CompareMem(h, "070701", 6) != 0 && CompareMem(h, "070702", 6) != 0) {
-      efiemu_debug_string("xnu-loader kernel: initrd is not a newc cpio archive\n");
+      efiemu_debug_string("efi-emulation: initrd is not a newc cpio archive\n");
       return;
     }
     UINT32 mode = hex8(h + 14);

@@ -76,7 +76,7 @@ static VOID uart_puts(UINT16 b, CONST CHAR8 *s) {
 
 VOID serial_init(VOID) {
   uart_program(SERIAL_BASE);
-  uart_puts(SERIAL_BASE, "SERIAL TEST COM1 (xnu-loader)\r\n");
+  uart_puts(SERIAL_BASE, "SERIAL TEST COM1 (efi-emulation)\r\n");
 
   serial_ready = TRUE;
 }

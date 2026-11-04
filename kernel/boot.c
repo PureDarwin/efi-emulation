@@ -22,7 +22,7 @@ void kernel_boot_main(UINT64 magic, UINT64 info) {
     kernel_multiboot2_main(magic, info);
   else if (magic == KERNEL_LINUX_MAGIC)
     kernel_linux_main(info);
-  efiemu_debug_string("xnu-loader kernel: unknown boot protocol\n");
+  efiemu_debug_string("efi-emulation: unknown boot protocol\n");
   for (;;)
     __asm__ volatile("cli; hlt");
 }

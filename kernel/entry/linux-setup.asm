@@ -269,8 +269,8 @@ best_vbe_pixels dd 0
 vbe_controller_info times 512 db 0
 vbe_mode_info times 256 db 0
 
-no_e820_message db 'xnu-loader: BIOS E820 memory map unavailable', 13, 10, 0
-version_string db 'xnu-loader', 0
+no_e820_message db 'efi-emulation: BIOS E820 memory map unavailable', 13, 10, 0
+version_string db 'efi-emulation', 0
 
 %if ($-$$) > BOOT_PARAMS
 %error "setup code overlaps boot_params"

@@ -1,0 +1,10 @@
+# freestanding aarch64, a cross gcc unless CC already names one
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
+if(DEFINED ENV{CC})
+    set(CMAKE_C_COMPILER $ENV{CC})
+else()
+    set(CMAKE_C_COMPILER aarch64-unknown-linux-gnu-gcc)
+endif()
+set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
